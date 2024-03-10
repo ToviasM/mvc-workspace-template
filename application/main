@@ -1,20 +1,15 @@
 import sys
-from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QApplication
+from asset_browser.asset_browser_model import AssetBrowserModel
+from asset_browser.asset_browser_view import AssetBrowserView
+from asset_browser.asset_browser_controller import AssetBrowserController
 
-class SimpleDialog(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Simple")
-        self.setGeometry(100,100,400,400)
-
-        layout = QVBoxLayout(self)
-        label = QLabel("Test")
-        layout.addWidget(label)
-        
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    dialog = SimpleDialog()
-    dialog.show()
+    model = AssetBrowserModel()
+    controller = AssetBrowserController()
+    main_window = AssetBrowserView(model, controller)
+    main_window.show()
     sys.exit(app.exec())
 
 
