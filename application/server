@@ -1,0 +1,13 @@
+PAGE_MAX = 5
+data = {
+    "Object ID 1" : {"Data1", "Data2"},
+    "Object ID 2" : {"Data1", "Data2"},
+    "Object ID 3" : {"Data1", "Data2"},
+    "Object ID 4" : {"Data1", "Data2"},
+    "Object ID 5" : {"Data1", "Data2"},
+    "Object ID 6" : {"Data1", "Data2"},
+    "Object ID 7" : {"Data1", "Data2"},
+}
+
+def get_metadata(page, number):
+        return data(list(data.items())[PAGE_MAX * page:(PAGE_MAX * page)+number])
