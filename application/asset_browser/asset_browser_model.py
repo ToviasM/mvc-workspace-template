@@ -13,7 +13,7 @@ class AssetBrowserModel(QObject):
     }
 
     __views__ = {
-        "VIEW_asset_list" : {"RIGHT" : InspectorView, "MAIN" : AssetListView}
+        "VIEW_asset_list" : {"RIGHT" : InspectorView, "CENTRAL" : AssetListView}
     }
 
     view_changed = Signal(dict)
