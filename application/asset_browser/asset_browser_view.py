@@ -15,16 +15,11 @@ class AssetBrowserView(QMainWindow):
         self.setWindowTitle("Asset Browser")
         self.setGeometry(100,100, 500, 500)
 
-        self.centralWidget = QWidget()
-        self.centralLayout = QVBoxLayout(self.centralWidget)
-        
-        self.setCentralWidget(self.centralWidget)
-
         self.controller = controller
         self.model = model
         self.docks = {}
-        self._central_widget = None
-
+        self._central_widget = QWidget()
+        
         self.draw()
     
     @property
@@ -33,28 +28,28 @@ class AssetBrowserView(QMainWindow):
     
     @central_widget.setter
     def central_widget(self, widget):
-        if self._central_widget is not None:
-            self.centralLayout.removeWidget(self.central_widget)
-            self._central_widget.deleteLater()
-            self.centralWidget.update()
         self._central_widget = widget
-        self.centralLayout.addWidget(self.central_widget)
+        self.setCentralWidget(self._central_widget)
 
     def draw(self): 
-        self.setup_view()
-        self.setup_menu_bar()
+        self.create_view()
+        self.create_menu_bar()
         self.model.view_changed.connect(self.update_view)
         self.model.panel_changed.connect(self.change_panel)
     
-    def update_view(self, view):
+    def update_view(self):
+        "This function updates the current view by updating the cached docks, then updating the view"
         for dock in self.docks.values():
             self.removeDockWidget(dock)
         self.docks.clear()
 
-        self.setup_view(view=view)
+        self.create_view()
 
-    def setup_view(self, view = None):
-        current_view = view or self.model.get_view()
+    def create_view(self):
+        """
+        Creates the view based on the models stored view
+        """
+        current_view = self.model.get_view()
         for space, panel in current_view.items():
             widget = self.model.__panels__[panel](space, self.model)
             if space == 'CENTRAL':
@@ -65,31 +60,45 @@ class AssetBrowserView(QMainWindow):
                 self.docks[space] = dock
                 self.addDockWidget(self.model.__docks__[space], dock)
 
-    def change_panel(self, widget:Panel, panel:str):
-        if widget.area == "CENTRAL":
-            self.change_central(widget, panel)
+    def change_panel(self, current_panel:Panel, panel:str):
+        """
+        Changes the current panel based on if it's a docked panel, or central widget
+        
+        args:
+        widget (Panel): this is the current panel we are displaying
+        panel (str) : This is the ID of the panel we would like to create
+        """
+
+        if current_panel.area == "CENTRAL":
+            self.change_central_panel(current_panel, panel)
         else: 
-            self.change_dock(widget, panel)
+            self.change_dock_panel(current_panel, panel)
 
-    def change_dock(self, widget:Panel, panel:str):
+    def change_dock_panel(self, current_panel:Panel, panel:str):
+        """
+        Changes & Updates the dock at the selected location, with the correct panel
         
-        dock_area = widget.area
-        self.removeDockWidget(self.docks[dock_area])
+        args:
+        widget (Panel): this is the current panel we are displaying
+        panel (str) : This is the ID of the panel we would like to create
+        """
+        space = current_panel.area
+        self.removeDockWidget(self.docks[space])
         
+        widget = self.model.__panels__[panel](space, self.model)
         
-        widget = self.model.__panels__[panel](dock_area, self.model)
-        
-        new_dock = QDockWidget(widget.__label__)
-        new_dock.setWidget(widget)
-        self.docks[dock_area] = new_dock
+        new_dock = QDockWidget(current_panel.__label__)
+        new_dock.setWidget(current_panel)
+        self.docks[space] = new_dock
 
-        self.addDockWidget(self.model.__docks__[dock_area], new_dock)
+        self.addDockWidget(self.model.__docks__[space], new_dock)
 
-    def change_central(self, widget, panel:str):
-        widget = self.model.__panels__[panel](widget.area, self.model)
+    def change_central_panel(self, current_panel, panel:str):
+        widget = self.model.__panels__[panel](current_panel.area, self.model)
         self.central_widget = widget
 
-    def setup_menu_bar(self):
+    def create_menu_bar(self):
+        "Creates the menu bar at the top of the screen"
         menu_bar = self.menuBar()
 
         file_menu = menu_bar.addMenu('File')

@@ -19,6 +19,7 @@ class Panel(QWidget):
         self.draw()
     
     def _draw_core(self):
+        "Draw the UI that will be rendered regardless of class"
         button = QPushButton("Change This Dock")
         button.clicked.connect(self.change_dock)
         self._layout.addWidget(button)
