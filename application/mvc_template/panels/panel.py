@@ -25,7 +25,7 @@ class Panel(QWidget):
         self._layout.addWidget(button)
 
     def change_dock(self):
-        self.model.update_panel(self, "PANEL_inspector")
+        self.model.update_panel(self, "PANEL_example1")
 
     def draw(self):
         pass

@@ -1,27 +1,28 @@
 
 from PySide6.QtCore import Signal, QObject
-from  .panels.inspector_panel import PANEL_inspector
-from  .panels.asset_list_panel import PANEL_asset_list
-from .asset_browser_view import AssetBrowserView
-from .panels.asset_team_panel import PANEL_asset_team
 from PySide6.QtWidgets import QWidget
 from .panels.panel import Panel
-
 from PySide6.QtCore import Qt
+
+from  .panels.example3_panel import PANEL_example3
+from .panels.example2_panel import PANEL_example2
+from  .panels.example1_panel import PANEL_example1
+from .template_view import AssetBrowserView
+
 class AssetBrowserModel(QObject):
     
     "Panels defined by the classes we create"
     __panels__ = {
-        PANEL_inspector.__id__ : PANEL_inspector,
-        PANEL_asset_list.__id__ : PANEL_asset_list,
-        PANEL_asset_team.__id__ : PANEL_asset_team,
+        PANEL_example3.__id__ : PANEL_example3,
+        PANEL_example2.__id__ : PANEL_example2,
+        PANEL_example1.__id__ : PANEL_example1,
     }
 
     "Preset views that we can create and display to the user"
     __views__ = {
-        "VIEW_asset_list" : {"RIGHT" : PANEL_inspector.__id__ , "CENTRAL" : PANEL_asset_list.__id__},
-        "VIEW_management" : {"RIGHT" : PANEL_asset_team.__id__, "CENTRAL" : PANEL_asset_list.__id__},
-        "VIEW_relationships" : {"RIGHT" : PANEL_inspector.__id__, "CENTRAL" : PANEL_inspector.__id__, "LEFT" : PANEL_asset_list.__id__},
+        "VIEW_example1" : {"RIGHT" : PANEL_example1.__id__ , "CENTRAL" : PANEL_example3.__id__},
+        "VIEW_example2" : {"RIGHT" : PANEL_example2.__id__, "CENTRAL" : PANEL_example1.__id__},
+        "VIEW_example3" : {"RIGHT" : PANEL_example2.__id__, "CENTRAL" : PANEL_example3.__id__, "LEFT" : PANEL_example1.__id__},
         "CUSTOM" : {},
     }
 
@@ -37,7 +38,7 @@ class AssetBrowserModel(QObject):
 
     def __init__(self, view=None) -> None:
         super().__init__()
-        self._view = view or self.__views__["VIEW_asset_list"]
+        self._view = view or self.__views__["VIEW_example1"]
 
     def set_view(self, view):
         self._view = view

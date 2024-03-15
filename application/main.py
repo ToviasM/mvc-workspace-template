@@ -1,8 +1,8 @@
 import sys
 from PySide6.QtWidgets import QApplication
-from asset_browser.asset_browser_model import AssetBrowserModel
-from asset_browser.asset_browser_view import AssetBrowserView
-from asset_browser.asset_browser_controller import AssetBrowserController
+from mvc_template.template_model import AssetBrowserModel
+from mvc_template.template_view import AssetBrowserView
+from mvc_template.template_controller import AssetBrowserController
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -1,11 +1,11 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 from .panel import Panel
-class PANEL_asset_team(Panel):
-    __label__ = "Inspector"
-    __id__ = "PANEL_asset_team"
+class PANEL_example1(Panel):
+    __label__ = "Example 1"
+    __id__ = "PANEL_example1"
     def __init__(self, area, model):
         super().__init__(area, model)
     
     def draw(self):
-        label = QLabel("Asset Team View")
+        label = QLabel("Example 1 Panel")
         self.core_layout.addWidget(label)

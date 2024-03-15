@@ -1,18 +1,15 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QVBoxLayout, QPushButton, QDockWidget
 from PySide6.QtGui import QAction
-from .panels.panel import Panel
 
-from .panels.asset_list_panel import PANEL_asset_list
-from .panels.asset_team_panel import PANEL_asset_team
-from .panels.inspector_panel import PANEL_inspector
+from .panels.panel import Panel
 
 class AssetBrowserView(QMainWindow):
 
 
     def __init__(self, model, controller) -> None:
         super().__init__()
-        self.setWindowTitle("Asset Browser")
+        self.setWindowTitle("Template")
         self.setGeometry(100,100, 500, 500)
 
         self.controller = controller
@@ -101,20 +98,18 @@ class AssetBrowserView(QMainWindow):
         "Creates the menu bar at the top of the screen"
         menu_bar = self.menuBar()
 
-        file_menu = menu_bar.addMenu('File')
-        edit_menu = menu_bar.addMenu('Edit')
         view_menu = menu_bar.addMenu('Workspace')
 
-        asset_list_view_action = QAction('Asset List', self)
-        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_asset_list"))
+        asset_list_view_action = QAction('View Example 1', self)
+        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_example1"))
         view_menu.addAction(asset_list_view_action)
 
-        asset_list_view_action = QAction('Teams and Management', self)
-        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_management"))
+        asset_list_view_action = QAction('View Example 2', self)
+        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_example2"))
         view_menu.addAction(asset_list_view_action)
 
-        asset_list_view_action = QAction('Relationships', self)
-        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_relationships"))
+        asset_list_view_action = QAction('View Example 3', self)
+        asset_list_view_action.triggered.connect(lambda : self.controller.change_view(self.model, "VIEW_example3"))
         view_menu.addAction(asset_list_view_action)
         
 
